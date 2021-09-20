@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint CocoaMQTT5.podspec' to ensure this is a
+# Be sure to run `pod lib lint CocoaMQTT5.0.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,35 +8,30 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CocoaMQTT5'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of CocoaMQTT5.'
+  s.version          = '1.0.0'
+  s.summary          = 'MQTT v5.0 client library for iOS/macOS/tvOS written with Swift 5'
+  s.homepage    = "https://github.com/leeway1208"
+  s.license     = { :type => "MIT" }
+  s.authors     = { "Feng Lee" => "feng@emqtt.io", "CrazyWisdom" => "zh.whong@gmail.com", "Alex Yu" => "alexyu.dc@gmail.com", "Leeway" => "leeway1208@gmail.com"  }
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
-
-  s.homepage         = 'https://github.com/leeway1208/CocoaMQTT5'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'leeway1208' => 'leeway1208@vip.qq.com' }
-  s.source           = { :git => 'https://github.com/leeway1208/CocoaMQTT5.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '9.0'
-
-  s.source_files = 'CocoaMQTT5/Classes/**/*'
+  s.swift_version = "5.0"
+  s.requires_arc = true
+  s.osx.deployment_target = "10.12"
+  s.ios.deployment_target = "10.0"
+  s.tvos.deployment_target = "10.0"
+  # s.watchos.deployment_target = "2.0"
+  s.source   = { :git => "https://github.com/leeway1208/CocoaMQTT5.git", :tag => "1.0.0"}
+  s.default_subspec = 'Core'
   
-  # s.resource_bundles = {
-  #   'CocoaMQTT5' => ['CocoaMQTT5/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.subspec 'Core' do |ss|
+    ss.dependency "CocoaAsyncSocket", "~> 7.6.3"
+    ss.source_files = "Source/*.swift"
+    ss.exclude_files = "Source/CocoaMQTTWebSocket.swift"
+  end
+  
+  s.subspec 'WebSockets' do |ss|
+    ss.dependency "CocoaMQTT5/Core"
+    ss.dependency "Starscream", "~> 3.0.2"
+    ss.source_files = "Source/CocoaMQTTWebSocket.swift"
+  end
 end

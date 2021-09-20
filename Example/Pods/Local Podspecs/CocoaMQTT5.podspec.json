@@ -1,0 +1,52 @@
+{
+  "name": "CocoaMQTT5",
+  "version": "0.1.0",
+  "summary": "MQTT v5.0 client library for iOS/macOS/tvOS written with Swift 5",
+  "homepage": "https://www.emqx.com/zh",
+  "license": {
+    "type": "MIT"
+  },
+  "authors": {
+    "Feng Lee": "feng@emqtt.io",
+    "CrazyWisdom": "zh.whong@gmail.com",
+    "Alex Yu": "alexyu.dc@gmail.com",
+    "Leeway": "leeway1208@gmail.com"
+  },
+  "swift_versions": "5.0",
+  "requires_arc": true,
+  "platforms": {
+    "osx": "10.12",
+    "ios": "10.0",
+    "tvos": "10.0"
+  },
+  "source": {
+    "git": "https://github.com/leeway1208/CocoaMQTT.git",
+    "tag": "0.1.0"
+  },
+  "default_subspecs": "Core",
+  "subspecs": [
+    {
+      "name": "Core",
+      "dependencies": {
+        "CocoaAsyncSocket": [
+          "~> 7.6.3"
+        ]
+      },
+      "source_files": "Source/*.swift",
+      "exclude_files": "Source/CocoaMQTTWebSocket.swift"
+    },
+    {
+      "name": "WebSockets",
+      "dependencies": {
+        "CocoaMQTT/Core": [
+
+        ],
+        "Starscream": [
+          "~> 3.0.2"
+        ]
+      },
+      "source_files": "Source/CocoaMQTTWebSocket.swift"
+    }
+  ],
+  "swift_version": "5.0"
+}
