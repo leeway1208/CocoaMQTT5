@@ -1,0 +1,6 @@
+use_frameworks!
+target 'CocoaMQTT5_Tests' do
+  pod 'CocoaMQTT5', :path => '../'
+  
+  
+end
