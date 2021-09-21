@@ -1,10 +1,9 @@
 # CocoaMQTT5
 
-![PodVersion](https://img.shields.io/cocoapods/v/CocoaMQTT.svg)
-![Platforms](https://img.shields.io/cocoapods/p/CocoaMQTT.svg)
+![PodVersion](https://img.shields.io/cocoapods/v/CocoaMQTT5.svg)
+![Platforms](https://img.shields.io/cocoapods/p/CocoaMQTT5.svg)
 ![License](https://img.shields.io/cocoapods/l/BadgeSwift.svg?style=flat)
 ![Swift version](https://img.shields.io/badge/swift-5-orange.svg)
-[![Coverage Status](https://coveralls.io/repos/github/emqx/CocoaMQTT/badge.svg?branch=master)](https://coveralls.io/github/emqx/CocoaMQTT?branch=master)
 
 MQTT v5.0 client library for iOS/macOS/tvOS written with Swift 5
 
@@ -32,6 +31,12 @@ $ pod install
 
 
 ## Usage
+
+First of all:
+
+```swift
+import CocoaMQTT5
+```
 
 Create a client to connect [MQTT broker](https://www.emqx.io/products/broker):
 
