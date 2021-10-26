@@ -1,6 +1,6 @@
 {
   "name": "CocoaMQTT5",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "summary": "MQTT v5.0 client library for iOS/macOS/tvOS written with Swift 5",
   "homepage": "https://github.com/emqx/CocoaMQTT/tree/dev/2.0",
   "license": {
@@ -21,7 +21,7 @@
   },
   "source": {
     "git": "https://github.com/leeway1208/CocoaMQTT5.git",
-    "tag": "1.0.2"
+    "tag": "1.0.3"
   },
   "default_subspecs": "Core",
   "subspecs": [
@@ -29,7 +29,7 @@
       "name": "Core",
       "dependencies": {
         "CocoaAsyncSocket": [
-          "~> 7.6.3"
+          "~> 7.6.5"
         ]
       },
       "source_files": "Source/*.swift",
