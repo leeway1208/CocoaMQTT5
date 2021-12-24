@@ -12,17 +12,21 @@ MQTT v3.1.1 and v5.0 client library for iOS/macOS/tvOS written with Swift 5
 
 Build with Xcode 11.1 / Swift 5.1
 
-IOS Target: 10.0 or above
+IOS Target: 9.0 or above
 OSX Target: 10.12 or above
 TVOS Target: 10.0 or above
 
 ## Installation
 ### CocoaPods
 
-Install using [CocoaPods](http://cocoapods.org) by adding this line to your Podfile:
+To integrate CocoaMQTT into your Xcode project using [CocoaPods](http://cocoapods.org), you need to modify you `Podfile` like the followings:
 
 ```ruby
-pod 'CocoaMQTT5, '~> 1.0.5''
+use_frameworks!
+
+target 'Example' do
+    pod 'CocoaMQTT'
+end
 ```
 
 Then, run the following command:
@@ -31,10 +35,10 @@ Then, run the following command:
 $ pod install
 ```
 
-At last, import "CocoaMQTT5" to your project:
+At last, import "CocoaMQTT" to your project:
 
 ```swift
-import CocoaMQTT5
+import CocoaMQTT
 ```
 
 
@@ -48,28 +52,14 @@ github "emqx/CocoaMQTT" "master"
 Then, run the following command:
 
 ```bash
-$ carthage update --platform iOS,macOS,tvOS
+$ carthage update --platform iOS,macOS,tvOS --use-xcframeworks
 ```
 
-Last if you're building for OS X:
+At last:
 
-- On your application targets “General” settings tab, in the "Embedded Binaries" section, drag and drop CocoaMQTT.framework from the Carthage/Build/Mac folder on disk.
+On your application targets “General” settings tab, in the "Frameworks, Libraries, and Embedded content" section, drag and drop CocoaMQTT.xcframework, CocoaAsyncSocket.xcframework and Starscream.xcframework from the Carthage/Build folder on disk. Then select "Embed & Sign". 
 
-If you're building for iOS, tvOS:
 
-- On your application targets “General” settings tab, in the "Frameworks and Libraries" section, drag and drop each framework you want to use from the Carthage/Build folder on disk.
-
-- On your application targets "Build Phases" settings tab, click the "+" icon and choose "New Run Script Phase". Create a Run Script with the following contents: 
-
-    ```
-    /usr/local/bin/carthage copy-frameworks
-    ```
-
-- and add the paths to the frameworks you want to use under "Input Files", e.g.:
-
-    ```
-    $(SRCROOT)/Carthage/Build/iOS/CocoaMQTT.framework
-    ```
 
 ## Usage
 
@@ -142,7 +132,7 @@ If you integrated by **CocoaPods**, you need to modify you `Podfile` like the fo
 use_frameworks!
 
 target 'Example' do
-    pod 'CocoaMQTT/WebSockets', '1.3.0-rc.1'
+    pod 'CocoaMQTT/WebSockets', '1.3.0-rc.2'
 end
 
 ```

@@ -17,59 +17,55 @@ enum CocoaMQTTReadTag: Int {
 
 ///
 protocol CocoaMQTTReaderDelegate: AnyObject {
-   
+
     func didReceive(_ reader: CocoaMQTTReader, connack: FrameConnAck)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, publish: FramePublish)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, puback: FramePubAck)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, pubrec: FramePubRec)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, pubrel: FramePubRel)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, pubcomp: FramePubComp)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, suback: FrameSubAck)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, unsuback: FrameUnsubAck)
-    
+
     func didReceive(_ reader: CocoaMQTTReader, pingresp: FramePingResp)
-    
-    func didReceive(_ reader: CocoaMQTTReader, disconnect: FrameDisconnect)
-    
-    func didReceive(_ reader: CocoaMQTTReader, auth: FrameAuth)
 }
 
 class CocoaMQTTReader {
-    
+
     private var socket: CocoaMQTTSocketProtocol
-    
+
     private weak var delegate: CocoaMQTTReaderDelegate?
-    
+
     private let timeout: TimeInterval = 30_000
-    
+
     /*  -- Reader states -- */
     private var header: UInt8 = 0
     private var length: UInt = 0
     private var data: [UInt8] = []
     private var multiply = 1
     /*  -- Reader states -- */
-    
+
     init(socket: CocoaMQTTSocketProtocol, delegate: CocoaMQTTReaderDelegate?) {
         self.socket = socket
         self.delegate = delegate
     }
-    
+
     func start() {
         readHeader()
     }
-    
+
     func headerReady(_ header: UInt8) {
         self.header = header
         readLength()
     }
-    
+
     func lengthReady(_ byte: UInt8) {
         length += (UInt)((Int)(byte & 127) * multiply)
         // done
@@ -85,26 +81,26 @@ class CocoaMQTTReader {
             readLength()
         }
     }
-    
+
     func payloadReady(_ data: Data) {
         self.data = [UInt8](repeating: 0, count: data.count)
         data.copyBytes(to: &(self.data), count: data.count)
         frameReady()
     }
-    
+
     private func readHeader() {
         reset()
         socket.readData(toLength: 1, withTimeout: -1, tag: CocoaMQTTReadTag.header.rawValue)
     }
-    
+
     private func readLength() {
         socket.readData(toLength: 1, withTimeout: timeout, tag: CocoaMQTTReadTag.length.rawValue)
     }
-    
+
     private func readPayload() {
         socket.readData(toLength: length, withTimeout: timeout, tag: CocoaMQTTReadTag.payload.rawValue)
     }
-    
+
     private func frameReady() {
 
         guard let frameType = FrameType(rawValue: UInt8(header & 0xF0)) else {
@@ -114,16 +110,13 @@ class CocoaMQTTReader {
         }
 
         // XXX: stupid implement
-        
+
         switch frameType {
         case .connack:
             guard let connack = FrameConnAck(packetFixedHeaderType: header, bytes: data) else {
-
                 printError("Reader parse \(frameType) failed, data: \(data)")
-                //print("rawValue - \(FrameConnAck(fixedHeader: header, bytes: data).description)")
                 break
             }
-
             delegate?.didReceive(self, connack: connack)
         case .publish:
             guard let publish = FramePublish(packetFixedHeaderType: header, bytes: data) else {
@@ -173,25 +166,13 @@ class CocoaMQTTReader {
                 break
             }
             delegate?.didReceive(self, pingresp: frame)
-        case .disconnect:
-            guard let frame = FrameDisconnect(packetFixedHeaderType: header, bytes: data) else {
-                printError("Reader parse \(frameType) failed, data: \(data)")
-                break
-            }
-            delegate?.didReceive(self, disconnect: frame)
-        case .auth:
-            guard let frame = FrameAuth(packetFixedHeaderType: header, bytes: data) else {
-                printError("Reader parse \(frameType) failed, data: \(data)")
-                break
-            }
-            delegate?.didReceive(self, auth: frame)
         default:
             break
         }
-        
+
         readHeader()
     }
-    
+
     private func reset() {
         length = 0
         multiply = 1
