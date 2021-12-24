@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /// MQTT Message
 public class CocoaMQTTMessage: NSObject {
     

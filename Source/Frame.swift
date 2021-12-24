@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /// Quality of Service levels
 @objc public enum CocoaMQTTQoS: UInt8, CustomStringConvertible {
     /// At most once delivery
@@ -113,12 +114,13 @@ extension Frame {
     /// Pack struct to binary
     func bytes(version: String) -> [UInt8] {
 
-        if version == "5.0" {
-            let fixedHeader = self.fixedHeader()
+
+        if version == "5.0" {   let fixedHeader = self.fixedHeader()
             let variableHeader5 = self.variableHeader5()
             let payload5 = self.payload5()
             let properties = self.properties()
             let len5 = UInt32(variableHeader5.count + properties.count + payload5.count)
+
 
             printDebug("==========================MQTT 5.0==========================")
             printDebug("packetFixedHeaderType \(packetFixedHeaderType)")
@@ -143,7 +145,8 @@ extension Frame {
             printDebug("variableHeader \(variableHeader)")
             printDebug("payload \(payload)")
             printDebug("=============================================================")
-            
+
+
             return [packetFixedHeaderType] + remainingLen(len: len) + variableHeader + payload
         }
 
@@ -191,7 +194,6 @@ extension Frame {
             return ((packetFixedHeaderType & 0x08) >> 3) == 0 ? false : true
         }
         set {
-            packetFixedHeaderType = self.fixedHeader().first ?? packetFixedHeaderType
             packetFixedHeaderType = (packetFixedHeaderType & 0xF7) | (newValue.bit  << 3)
         }
     }
@@ -202,7 +204,6 @@ extension Frame {
             return CocoaMQTTQoS(rawValue: (packetFixedHeaderType & 0x06) >> 1)!
         }
         set {
-            packetFixedHeaderType = self.fixedHeader().first ?? packetFixedHeaderType
             packetFixedHeaderType = (packetFixedHeaderType & 0xF9) | (newValue.rawValue << 1)
         }
     }
@@ -213,7 +214,6 @@ extension Frame {
             return (packetFixedHeaderType & 0x01) == 0 ? false : true
         }
         set {
-            packetFixedHeaderType = self.fixedHeader().first ?? packetFixedHeaderType
             packetFixedHeaderType = (packetFixedHeaderType & 0xFE) | newValue.bit
         }
     }

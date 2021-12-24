@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 struct FrameAuth: Frame {
 
     var packetFixedHeaderType: UInt8 = FrameType.auth.rawValue

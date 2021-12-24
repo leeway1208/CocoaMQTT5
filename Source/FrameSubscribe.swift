@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /// MQTT SUBSCRIBE Frame
 struct FrameSubscribe: Frame {
     
@@ -141,18 +142,17 @@ extension FrameSubscribe {
 }
 
 extension FrameSubscribe: CustomStringConvertible {
+    var description: String {
 
-    var description5: String {
-        var desc = ""
-        if let unwrappedList = topicFilters, !unwrappedList.isEmpty {
-            for subscription in unwrappedList {
+        if topicFilters == nil {
+            return "SUBSCRIBE(id: \(String(describing: msgid)), topics: \(String(describing: topics)))"
+        }else{
+            var desc = ""
+            for subscription in self.topicFilters! {
                 desc += "SUBSCRIBE(id: \(String(describing: msgid)), topics: \(subscription.topic))  "
             }
+            return desc
         }
-        return desc
-    }
 
-    var description: String {
-        return "SUBSCRIBE(id: \(String(describing: msgid)), topics: \(String(describing: topics)))"
     }
 }

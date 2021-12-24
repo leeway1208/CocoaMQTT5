@@ -9,6 +9,8 @@
 import Foundation
 import CocoaAsyncSocket
 
+
+
 /**
  * Conn Ack
  */
@@ -23,13 +25,13 @@ import CocoaAsyncSocket
     
     public var description: String {
         switch self {
-        case .accept:                       return "accept"
-        case .unacceptableProtocolVersion:  return "unacceptableProtocolVersion"
-        case .identifierRejected:           return "identifierRejected"
-        case .serverUnavailable:            return "serverUnavailable"
-        case .badUsernameOrPassword:        return "badUsernameOrPassword"
-        case .notAuthorized:                return "notAuthorized"
-        case .reserved:                     return "reserved"
+            case .accept:                       return "accept"
+            case .unacceptableProtocolVersion:  return "unacceptableProtocolVersion"
+            case .identifierRejected:           return "identifierRejected"
+            case .serverUnavailable:            return "serverUnavailable"
+            case .badUsernameOrPassword:        return "badUsernameOrPassword"
+            case .notAuthorized:                return "notAuthorized"
+            case .reserved:                     return "reserved"
         }
     }
 }
@@ -192,7 +194,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient {
     
     /// Keep alive time interval
     public var keepAlive: UInt16 = 60
-    private var aliveTimer: CocoaMQTTTimer?
+	private var aliveTimer: CocoaMQTTTimer?
     
     /// Enable auto-reconnect mechanism
     public var autoReconnect = false
@@ -294,7 +296,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient {
     }
     
     deinit {
-        aliveTimer?.suspend()
+		aliveTimer?.suspend()
         autoReconnTimer?.suspend()
         
         socket.setDelegate(nil, delegateQueue: nil)
@@ -514,7 +516,7 @@ extension CocoaMQTT: CocoaMQTTDeliverProtocol {
             
             self.delegate?.mqtt(self, didPublishMessage: message, id: msgid)
             self.didPublishMessage(self, message, msgid)
-
+        
         } else if let pubrel = frame as? FramePubRel {
             // -- Send PUBREL
             send(pubrel, tag: Int(pubrel.msgid))
@@ -540,8 +542,8 @@ extension CocoaMQTT: CocoaMQTTSocketDelegate {
     }
     
     public func socket(_ socket: CocoaMQTTSocketProtocol,
-                       didReceive trust: SecTrust,
-                       completionHandler: @escaping (Bool) -> Swift.Void) {
+                         didReceive trust: SecTrust,
+                         completionHandler: @escaping (Bool) -> Swift.Void) {
         
         printDebug("Call the SSL/TLS manually validating function")
         
@@ -587,7 +589,7 @@ extension CocoaMQTT: CocoaMQTTSocketDelegate {
             }
         }
 
-        guard autoReconnect else {
+        guard autoReconnect else {            
             return
         }
         
@@ -611,6 +613,14 @@ extension CocoaMQTT: CocoaMQTTSocketDelegate {
 
 // MARK: - CocoaMQTTReaderDelegate
 extension CocoaMQTT: CocoaMQTTReaderDelegate {
+    
+    func didReceive(_ reader: CocoaMQTTReader, disconnect: FrameDisconnect) {
+    
+    }
+    
+    func didReceive(_ reader: CocoaMQTTReader, auth: FrameAuth) {
+        
+    }
     
     func didReceive(_ reader: CocoaMQTTReader, connack: FrameConnAck) {
         printDebug("RECV: \(connack)")
@@ -711,6 +721,7 @@ extension CocoaMQTT: CocoaMQTTReaderDelegate {
 
     func didReceive(_ reader: CocoaMQTTReader, suback: FrameSubAck) {
         printDebug("RECV: \(suback)")
+        
         guard let topicsAndQos = subscriptionsWaitingAck.removeValue(forKey: suback.msgid) else {
             printWarning("UNEXPECT SUBACK Received: \(suback)")
             return
@@ -735,7 +746,7 @@ extension CocoaMQTT: CocoaMQTTReaderDelegate {
         delegate?.mqtt(self, didSubscribeTopics: success, failed: failed)
         didSubscribeTopics(self, success, failed)
     }
-    
+
     func didReceive(_ reader: CocoaMQTTReader, unsuback: FrameUnsubAck) {
         printDebug("RECV: \(unsuback)")
         

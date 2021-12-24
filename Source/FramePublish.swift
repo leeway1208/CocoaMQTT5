@@ -12,9 +12,9 @@ import Foundation
 struct FramePublish: Frame {
 
     //3.3.1.1 DUP
-    public var dup: Bool = false
+    public var DUP: Bool = false
     //3.3.1.2 QoS
-    //public var qos: CocoaMQTTQoS = .qos1
+    public var QoS: CocoaMQTTQoS = .qos1
     //3.3.1.3 RETAIN
     public var retain: Bool = false
     //3.3.1.4 Remaining Length
@@ -49,7 +49,7 @@ struct FramePublish: Frame {
         self.topic = topic
         self._payload = payload
         self.msgid = msgid
-        self.qos = qos
+        self.QoS = qos
     }
 }
 
@@ -67,13 +67,13 @@ extension FramePublish {
             flags = flags | 0b0011_0000
         }
 
-        if dup {
+        if DUP {
             flags = flags | 0b0011_1000
         } else {
             flags = flags | 0b0011_0000
         }
 
-        switch qos {
+        switch QoS {
         case .qos0:
             flags = flags | 0b0011_0000
         case .qos1:
@@ -95,7 +95,7 @@ extension FramePublish {
         //3.3.2.1 Topic Name
         var header = self.topic.bytesWithLength
         //3.3.2.2 Packet Identifier qos1 or qos2
-        if qos > .qos0 {
+        if QoS > .qos0 {
             header += msgid.hlBytes
 //            header.append(UInt8(0))
 //            header.append(QoS.rawValue)

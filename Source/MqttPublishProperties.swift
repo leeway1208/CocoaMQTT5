@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 public class MqttPublishProperties: NSObject {
 
 

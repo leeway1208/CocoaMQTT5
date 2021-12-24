@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /// Encode and Decode big-endian UInt16
 extension UInt16 {
     /// Most Significant Byte (MSB)

@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /// MQTT UNSUBSCRIBE packet
 struct FrameUnsubscribe: Frame {
     
@@ -124,18 +125,11 @@ extension FrameUnsubscribe {
 
 extension FrameUnsubscribe: CustomStringConvertible {
     
-    var description5: String {
+    var description: String {
         var desc = ""
-        if let unwrappedList = topicFilters, !unwrappedList.isEmpty {
-            for subscription in unwrappedList {
-                desc += "UNSUBSCRIBE(id: \(String(describing: subscription.topic)), topics: \(subscription.topic))  "
-            }
+        for subscription in topicFilters! {
+            desc += "UNSUBSCRIBE(id: \(String(describing: msgid)), topics: \(subscription.topic))  "
         }
         return desc
-    }
-
-
-    var description: String {
-        return "UNSUBSCRIBE(id: \(String(describing: msgid)), topics: \(String(describing: topics)))"
     }
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /// MQTT PINGRESP packet
 struct FramePingResp: Frame {
 

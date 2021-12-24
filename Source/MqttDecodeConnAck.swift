@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 public class MqttDecodeConnAck: NSObject {
 
 //    var connackData: [UInt8]
@@ -64,6 +65,7 @@ public class MqttDecodeConnAck: NSObject {
         let occupyIndex = index
 
         // properties
+
         while index - occupyIndex < propertyLength! {
             let resVariableByteInteger = decodeVariableByteInteger(data: connackData, offset: index)
             index = resVariableByteInteger.newOffset
@@ -75,12 +77,16 @@ public class MqttDecodeConnAck: NSObject {
             switch propertyName.rawValue {
                 
             case CocoaMQTTPropertyName.sessionExpiryInterval.rawValue:
+//                sessionExpiryInterval = UInt32(integerCompute(data: connackData, formatType: formatInt.formatUint32.rawValue, offset: index)!)
+//                index += 4
 
                 let comRes = integerCompute(data: connackData, formatType: formatInt.formatUint32.rawValue, offset: index)
                 sessionExpiryInterval = UInt32(comRes!.res)
                 index = comRes!.newOffset
 
             case CocoaMQTTPropertyName.receiveMaximum.rawValue:
+//                receiveMaximum = UInt16(integerCompute(data: connackData, formatType: formatInt.formatUint16.rawValue, offset: index)!)
+//                index += 2
 
                 let comRes = integerCompute(data: connackData, formatType: formatInt.formatUint16.rawValue, offset: index)
                 receiveMaximum = UInt16(comRes!.res)
@@ -111,6 +117,8 @@ public class MqttDecodeConnAck: NSObject {
                 index += 1
                 
             case CocoaMQTTPropertyName.maximumPacketSize.rawValue:
+//                maximumPacketSize = UInt32(integerCompute(data: connackData, formatType: formatInt.formatUint32.rawValue, offset: index)!)
+//                index += 4
 
                 let comRes = integerCompute(data: connackData, formatType: formatInt.formatUint32.rawValue, offset: index)
                 maximumPacketSize = UInt32(comRes!.res)
@@ -124,6 +132,8 @@ public class MqttDecodeConnAck: NSObject {
                 index = result.newOffset
                 
             case CocoaMQTTPropertyName.topicAliasMaximum.rawValue:
+//                topicAliasMaximum = UInt16(integerCompute(data: connackData, formatType: formatInt.formatUint16.rawValue, offset: index)!)
+//                index += 2
 
                 let comRes = integerCompute(data: connackData, formatType: formatInt.formatUint16.rawValue, offset: index)
                 topicAliasMaximum = UInt16(comRes!.res)
@@ -187,6 +197,8 @@ public class MqttDecodeConnAck: NSObject {
                 index += 1
                 
             case CocoaMQTTPropertyName.serverKeepAlive.rawValue:
+//                serverKeepAlive = UInt16(integerCompute(data: connackData, formatType: formatInt.formatUint16.rawValue, offset: index)!)
+//                    index += 2
 
                 let comRes = integerCompute(data: connackData, formatType: formatInt.formatUint16.rawValue, offset: index)
                 serverKeepAlive = UInt16(comRes!.res)
